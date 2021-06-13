@@ -1,0 +1,49 @@
+---
+title: "R Package Week4 Vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Week4Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+```{r setup}
+library(week4)
+```
+
+The Week4 package is a R package that serves as an exercise for my summer 2021's PURM project. It contains two functions and one dataset. I have also developed a shiny app that does the same thing, which can be accessed through https://sheepywool.shinyapps.io/Task_Week_2/.
+
+
+The first of the two functions in the package is prop_test(), which returns the p-value at 95% confidence level from a two sample proportion test. It takes in four parameters, number of success and sample size of sample 1, and the same for sample 2. An example is shown below. 
+```{r}
+prop_test(50, 100, 30, 100)
+```
+
+This function is much better when used on a dataset. This package incorpoated a sample dataset containing two samples x and y. Each sample has 100 entries, with sample x having a 30% success rate and sample y having a 70% success rate. 
+```{r}
+head(binom_sample)
+```
+
+We can thus carry out a two sample proportion test on this dataset. For other dataframes, users can set an artificial threshold to determine the number of success and thus carry out the test. 
+```{r}
+success_x = sum(binom_sample['x'])
+success_y = sum(binom_sample['y'])
+sample_size = nrow(binom_sample)
+
+prop_test(success_x, sample_size, success_y, sample_size)
+```
+
+
+The second function in the package is prop_nfind(). This function serves as a sample size calculator, calculating the sample size needed to result in significance. This function uses the equation from http://powerandsamplesize.com/Calculators/Compare-2-Proportions/2-Sample-Equality. It takes the success rate for both samples, the desired significance level, power, and finally the ratio between the sample size. An example is shown below. 
+```{r}
+prop_nfind(0.3, 0.5, 0.05, 0.8, 1.5)
+```
+
